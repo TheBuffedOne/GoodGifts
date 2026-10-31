@@ -1,8 +1,7 @@
 import { useState } from 'react'
-// @ts-ignore
 import './App.css'
-// @ts-ignore
 import BirthdayBoard from './BirthdayBoard/BirthdayBoard.jsx'
+import { people } from './BirthdayBoard/people.js'
 
 const navigationItems = [
   { id: 'birthday', label: 'Birthday board', icon: 'cake.svg' },
@@ -12,6 +11,34 @@ const navigationItems = [
 
 function App() {
   const [activeView, setActiveView] = useState('login')
+  const [accountName, setAccountName] = useState('Unknown')
+  const [loginError, setLoginError] = useState('')
+  const isAuthenticated = accountName !== 'Unknown'
+
+  const handleLogin = (event) => {
+    event.preventDefault()
+    const username = new FormData(event.currentTarget).get('username')
+    const name = typeof username === 'string' ? username.trim() : ''
+    const person = people.find((entry) => entry.name.toLowerCase() === name.toLowerCase())
+
+    if (!name) {
+      return
+    }
+
+    if (!person) {
+      setLoginError('Der Name existiert nicht.')
+      return
+    }
+
+    setLoginError('')
+    setAccountName(person.name)
+    setActiveView('birthday')
+  }
+
+  const handleLogout = () => {
+    setAccountName('Unknown')
+    setActiveView('login')
+  }
 
   return (
     <div className="app-layout">
@@ -32,7 +59,7 @@ function App() {
               type="button"
               key={item.id}
               aria-current={activeView === item.id ? 'page' : undefined}
-              onClick={() => setActiveView(item.id)}
+              onClick={() => setActiveView(isAuthenticated ? item.id : 'login')}
             >
               <img
                 className="sidebar-button-icon"
@@ -45,26 +72,33 @@ function App() {
         </nav>
 
         <section className="sidebar-account" aria-label="My account">
-          <button className="sidebar-account-button" type="button" aria-label="Account: Unknown">
+          <button className="sidebar-account-button" type="button" aria-label={`Account: ${accountName}`} onClick={() => setActiveView('login')}>
             <img
               className="sidebar-account-avatar"
               src="https://cdn.jsdelivr.net/npm/lucide-static@0.460.0/icons/user-round.svg"
               alt=""
             />
-            <span className="sidebar-account-name">Unknown</span>
+            <span className="sidebar-account-name">{accountName}</span>
           </button>
-          <button className="sidebar-account-auth" type="button">Anmelden</button>
+          <button
+            className="sidebar-account-auth"
+            type="button"
+            onClick={isAuthenticated ? handleLogout : () => setActiveView('login')}
+          >
+            {isAuthenticated ? 'Abmelden' : 'Anmelden'}
+          </button>
         </section>
       </aside>
 
       <main className="main-screen">
         {activeView === 'birthday' ? (
-          <BirthdayBoard />
+          <BirthdayBoard accountName={accountName} />
         ) : activeView === 'login' ? (
-          <form className="login-window" onSubmit={(event) => event.preventDefault()}>
+          <form className="login-window" onSubmit={handleLogin}>
             <h1>User Login</h1>
             <label htmlFor="login-username">Username</label>
             <input id="login-username" name="username" type="text" autoComplete="username" required />
+            {loginError && <p className="login-error" role="alert">{loginError}</p>}
             <button className="login-submit" type="submit">Login</button>
           </form>
         ) : (

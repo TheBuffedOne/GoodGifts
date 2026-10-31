@@ -1,6 +1,6 @@
 import { useId, useState } from 'react'
 
-function GiftPlans({ person, gifts, onAddGift, onRemoveGift, onClose }) {
+function GiftPlans({ person, gifts, onAddGift, onRemoveGift, onToggleLike, onClose }) {
   const inputId = useId()
   const [giftName, setGiftName] = useState('')
 
@@ -47,18 +47,29 @@ function GiftPlans({ person, gifts, onAddGift, onRemoveGift, onClose }) {
           <section className="gift-plans-list" aria-label={`Gift plans for ${person.name}`}>
             <h3>Gift ideas</h3>
             {gifts.length > 0 ? (
-              <ul className="gift-list">
-                {gifts.map((gift, index) => (
-                  <li className="gift-list-item" key={`${gift}-${index}`}>
-                    <span>{gift}</span>
+                <ul className="gift-list">
+                  {gifts.map((gift, index) => (
+                  <li className="gift-list-item" key={`${gift.name}-${index}`}>
+                    <span>{gift.name}</span>
+                    <div className="gift-list-actions">
+                      <button
+                        className={`gift-like${gift.liked ? ' is-liked' : ''}`}
+                        type="button"
+                        aria-label={`${gift.liked ? 'Unlike' : 'Like'} ${gift.name}`}
+                        aria-pressed={gift.liked}
+                        onClick={() => onToggleLike(index)}
+                      >
+                        {gift.liked ? '♥' : '♡'} {gift.likes}
+                      </button>
                     <button
                       className="gift-remove"
                       type="button"
-                      aria-label={`Remove ${gift}`}
+                      aria-label={`Remove ${gift.name}`}
                       onClick={() => onRemoveGift(index)}
                     >
                       ×
                     </button>
+                    </div>
                   </li>
                 ))}
               </ul>

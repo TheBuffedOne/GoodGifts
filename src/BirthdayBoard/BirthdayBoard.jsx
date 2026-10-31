@@ -1,4 +1,5 @@
 import PersonCard from './PersonCard.jsx'
+import { people } from './people.js'
 
 const MONTHS = {
   Januar: 0,
@@ -15,12 +16,6 @@ const MONTHS = {
   Dezember: 11,
 }
 
-const people = [
-  { id: 1, name: 'Anna Müller', birthday: '14. März', avatar: 47 },
-  { id: 2, name: 'Max Weber', birthday: '2. April', avatar: 12 },
-  { id: 3, name: 'Lina Fischer', birthday: '21. Mai', avatar: 44 },
-]
-
 function daysUntilNextBirthday(birthday, today = new Date()) {
   const [dayPart, monthName] = birthday.replace('.', '').split(' ')
   const month = MONTHS[monthName]
@@ -36,8 +31,10 @@ function daysUntilNextBirthday(birthday, today = new Date()) {
   return Math.round((next - start) / 86_400_000)
 }
 
-function BirthdayBoard() {
-  const upcomingPeople = [...people].sort(
+function BirthdayBoard({ accountName }) {
+  const upcomingPeople = people
+    .filter((person) => person.name !== accountName)
+    .sort(
     (a, b) => daysUntilNextBirthday(a.birthday) - daysUntilNextBirthday(b.birthday),
   )
 

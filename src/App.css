@@ -294,6 +294,12 @@ button {
   list-style: none;
 }
 
+.gift-overflow {
+  margin: 0 0 14px;
+  color: #788078;
+  font-size: 13px;
+}
+
 .gift-list-item {
   display: flex;
   align-items: center;
@@ -305,6 +311,38 @@ button {
   color: #4c584e;
   font-size: 14px;
   overflow-wrap: anywhere;
+}
+
+.gift-list-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.gift-like,
+.gift-like-count {
+  color: #788078;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.gift-like {
+  padding: 4px 7px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  cursor: pointer;
+}
+
+.gift-like:hover,
+.gift-like.is-liked {
+  color: #d94b61;
+}
+
+.gift-like:focus-visible {
+  outline: 2px solid #d94b61;
+  outline-offset: 2px;
 }
 
 .gift-remove {
@@ -499,6 +537,12 @@ button {
 
 .login-window label {
   color: #59645b;
+  font-size: 14px;
+}
+
+.login-error {
+  margin: 0;
+  color: #a44747;
   font-size: 14px;
 }
 
