@@ -55,6 +55,17 @@ function MySettings({ accountName }) {
         >
           Profile &amp; preferences
         </button>
+        <button
+            className={`settings-tab${activeTab === 'change password' ? ' is-active' : ''}`}
+            id="change password"
+            type="button"
+            role="tab"
+            aria-selected={activeTab === 'change password'}
+            aria-controls="change password"
+            onClick={() => setActiveTab('change password')}
+        >
+          change Password
+        </button>
       </div>
 
         <div className="settings-panel" id="profile-panel" role="tabpanel" aria-labelledby="profile-tab">

@@ -14,26 +14,35 @@ const navigationItems = [
 function App() {
   const [activeView, setActiveView] = useState('login')
   const [accountName, setAccountName] = useState('Unknown')
-  const [loginError, setLoginError] = useState('')
+  const [loginNameError, setLoginNameError] = useState('')
+  const [loginPasswordError, setLoginPasswordError] = useState('')
   const isAuthenticated = accountName !== 'Unknown'
   const account = people.find((person) => person.name === accountName)
 
   const handleLogin = (event) => {
     event.preventDefault()
     const username = new FormData(event.currentTarget).get('username')
+    const password = new FormData(event.currentTarget).get('password')
     const name = typeof username === 'string' ? username.trim() : ''
     const person = people.find((entry) => entry.name.toLowerCase() === name.toLowerCase())
+    const personsPassword = people.find((entry) => entry.name.toLowerCase() === name.toLowerCase()).password
 
     if (!name) {
       return
     }
 
     if (!person) {
-      setLoginError('Der Name existiert nicht.')
+      setLoginNameError('Der Name existiert nicht.')
       return
     }
 
-    setLoginError('')
+    if (password !== personsPassword) {
+      setLoginPasswordError('Das Passwort ist falsch.')
+      return
+    }
+
+    setLoginNameError('')
+    setLoginPasswordError('')
     setAccountName(person.name)
     setActiveView('birthday')
   }
@@ -112,7 +121,10 @@ function App() {
             <h1>User Login</h1>
             <label htmlFor="login-username">Username</label>
             <input id="login-username" name="username" type="text" autoComplete="username" required />
-            {loginError && <p className="login-error" role="alert">{loginError}</p>}
+            {loginNameError && <p className="login-error" role="alert">{loginNameError}</p>}
+            <label htmlFor="login-password">Password</label>
+            <input id="login-password" name="password" type="password" autoComplete="password" required />
+            {loginPasswordError && <p className="login-error" role="alert">{loginPasswordError}</p>}
             <button className="login-submit" type="submit">Login</button>
           </form>
         ) : (

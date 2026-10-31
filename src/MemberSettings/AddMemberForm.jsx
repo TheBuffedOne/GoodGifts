@@ -52,6 +52,30 @@ function AddMemberForm({ members, onCreate }) {
         <small>Unique · letters, numbers and dots</small>
       </label>
 
+        <label className="member-form-field" htmlFor="new-member-e-mail">
+            <span>E-Mail</span>
+            <input
+                id="new-member-e-mail"
+                name="e-mail"
+                type="text"
+                placeholder="E-Mail"
+                autoComplete="off"
+                required
+            />
+        </label>
+
+        <label className="member-form-field" htmlFor="new-member-password">
+        <span>Password</span>
+        <input
+            id="new-member-password"
+            name="password"
+            type="text"
+            placeholder="***"
+            autoComplete="off"
+            required
+        />
+    </label>
+
       {error && <p className="member-form-error" role="alert">{error}</p>}
 
       <button className="member-create-button" type="submit">
