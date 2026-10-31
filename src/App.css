@@ -153,6 +153,11 @@ button {
   background: #f1f3ef;
 }
 
+.sidebar-account-avatar.is-photo {
+  padding: 0;
+  object-fit: cover;
+}
+
 .sidebar-account-auth {
   padding: 8px;
   border: 1px solid #dce5db;

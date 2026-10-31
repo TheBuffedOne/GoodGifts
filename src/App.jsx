@@ -16,6 +16,7 @@ function App() {
   const [accountName, setAccountName] = useState('Unknown')
   const [loginError, setLoginError] = useState('')
   const isAuthenticated = accountName !== 'Unknown'
+  const account = people.find((person) => person.name === accountName)
 
   const handleLogin = (event) => {
     event.preventDefault()
@@ -74,10 +75,17 @@ function App() {
         </nav>
 
         <section className="sidebar-account" aria-label="My account">
-          <button className="sidebar-account-button" type="button" aria-label={`Account: ${accountName}`} onClick={() => setActiveView('login')}>
+          <button
+            className="sidebar-account-button"
+            type="button"
+            aria-label={`Account: ${accountName}`}
+            onClick={() => setActiveView(isAuthenticated ? 'my-settings' : 'login')}
+          >
             <img
-              className="sidebar-account-avatar"
-              src="https://cdn.jsdelivr.net/npm/lucide-static@0.460.0/icons/user-round.svg"
+              className={`sidebar-account-avatar${isAuthenticated ? ' is-photo' : ''}`}
+              src={isAuthenticated && account
+                ? `https://i.pravatar.cc/80?img=${account.avatar}`
+                : 'https://cdn.jsdelivr.net/npm/lucide-static@0.460.0/icons/user-round.svg'}
               alt=""
             />
             <span className="sidebar-account-name">{accountName}</span>
