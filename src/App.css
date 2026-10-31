@@ -927,6 +927,421 @@ button {
   background: #2e6d52;
 }
 
+.member-settings {
+  width: min(100%, 1190px);
+  padding: 38px 40px 56px;
+  margin: 0 auto;
+}
+
+.member-settings-heading {
+  margin-bottom: 27px;
+}
+
+.member-settings-eyebrow {
+  margin: 0 0 8px;
+  color: #45826a;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.09em;
+}
+
+.member-settings-heading h1 {
+  margin: 0;
+  color: #263c31;
+  font-size: clamp(27px, 3vw, 38px);
+  line-height: 1.15;
+}
+
+.member-settings-heading > p:last-child {
+  margin: 8px 0 0;
+  color: #858d84;
+  font-size: 14px;
+}
+
+.member-settings-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  align-items: start;
+  gap: 22px;
+}
+
+.member-settings-main {
+  display: grid;
+  min-width: 0;
+  gap: 18px;
+}
+
+.member-admin-card,
+.member-list-card,
+.member-add-card {
+  border: 1px solid #ece9e1;
+  border-radius: 18px;
+  background: #fffefa;
+  box-shadow: 0 3px 12px rgb(56 65 54 / 3%);
+}
+
+.member-admin-card {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 13px;
+  padding: 18px;
+}
+
+.member-avatar {
+  width: 42px;
+  height: 42px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.member-admin-avatar {
+  width: 48px;
+  height: 48px;
+}
+
+.member-admin-details h2,
+.member-admin-details p,
+.member-admin-details small {
+  display: block;
+  margin: 0;
+}
+
+.member-admin-details h2 {
+  color: #293b30;
+  font-size: 15px;
+}
+
+.member-admin-details h2 span {
+  font-weight: 600;
+}
+
+.member-admin-details p {
+  margin-top: 3px;
+  color: #8a9188;
+  font-size: 11px;
+}
+
+.member-admin-details small {
+  margin-top: 11px;
+  color: #a0a49c;
+  font-size: 10px;
+}
+
+.member-admin-badge,
+.member-list-heading > span {
+  padding: 5px 9px;
+  border-radius: 999px;
+  background: #e7f2e8;
+  color: #43805f;
+  font-size: 11px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.member-my-settings-link {
+  grid-column: 2 / -1;
+  justify-self: end;
+  margin-top: -8px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #39795c;
+  font-size: 11px;
+  font-weight: 800;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.member-my-settings-link:hover {
+  text-decoration: underline;
+}
+
+.member-list-card {
+  overflow: hidden;
+}
+
+.member-list-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 17px 18px;
+  border-bottom: 1px solid #f0eee8;
+}
+
+.member-list-heading h2,
+.member-add-card h2 {
+  margin: 0;
+  color: #2b3f33;
+  font-size: 18px;
+}
+
+.member-list-heading > span {
+  font-size: 10px;
+}
+
+.member-table-scroll {
+  overflow-x: auto;
+}
+
+.member-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.member-table th {
+  padding: 10px 13px;
+  background: #f7f5ef;
+  color: #92968d;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.035em;
+  text-transform: uppercase;
+}
+
+.member-table th:first-child,
+.member-table td:first-child {
+  padding-left: 17px;
+}
+
+.member-table td {
+  padding: 11px 13px;
+  border-top: 1px solid #f0eee8;
+  color: #657168;
+  font-size: 11px;
+}
+
+.member-identity {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 145px;
+}
+
+.member-identity > div {
+  display: grid;
+  gap: 2px;
+}
+
+.member-identity strong {
+  color: #344238;
+  font-size: 12px;
+}
+
+.member-identity span {
+  color: #959b93;
+  font-size: 10px;
+}
+
+.member-birthday {
+  white-space: nowrap;
+}
+
+.member-actions {
+  min-width: 68px;
+}
+
+.member-action-edit,
+.member-action-save,
+.member-action-remove {
+  display: block;
+  padding: 2px 0;
+  border: 0;
+  background: transparent;
+  font-size: 10px;
+  cursor: pointer;
+}
+
+.member-action-edit,
+.member-action-save {
+  color: #43805f;
+  font-weight: 800;
+}
+
+.member-action-remove {
+  color: #bd7770;
+}
+
+.member-action-edit:hover,
+.member-action-save:hover,
+.member-action-remove:hover {
+  text-decoration: underline;
+}
+
+.member-edit-form {
+  display: grid;
+  min-width: 155px;
+  gap: 5px;
+}
+
+.member-edit-form input,
+.member-form-field input {
+  width: 100%;
+  min-height: 36px;
+  padding: 8px 10px;
+  border: 1px solid #e9e7e0;
+  border-radius: 7px;
+  background: #fff;
+  color: #455148;
+  font: inherit;
+  font-size: 11px;
+}
+
+.member-edit-form input:focus,
+.member-form-field input:focus {
+  border-color: #73a77d;
+  outline: 3px solid rgb(134 185 145 / 25%);
+}
+
+.member-empty-state {
+  padding: 18px;
+  margin: 0;
+  color: #858d84;
+  font-size: 13px;
+}
+
+.member-add-card {
+  padding: 20px;
+}
+
+.member-add-card h2 {
+  font-size: 18px;
+}
+
+.member-add-card > p {
+  margin: 7px 0 20px;
+  color: #8b9289;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.member-form-field {
+  display: grid;
+  gap: 7px;
+  margin-top: 14px;
+}
+
+.member-form-field > span {
+  color: #46564a;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.member-form-field input {
+  min-height: 38px;
+  font-size: 12px;
+}
+
+.member-form-field input::placeholder {
+  color: #a5aaa2;
+}
+
+.member-form-field small {
+  color: #989e95;
+  font-size: 10px;
+}
+
+.member-form-error {
+  color: #b6534d !important;
+  font-size: 11px !important;
+}
+
+.member-create-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 16px;
+  padding: 10px 13px;
+  border: 0;
+  border-radius: 8px;
+  background: #347b5e;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.member-create-button:hover {
+  background: #2e6d52;
+}
+
+.member-create-button:focus-visible,
+.member-action-edit:focus-visible,
+.member-action-save:focus-visible,
+.member-action-remove:focus-visible,
+.member-my-settings-link:focus-visible {
+  outline: 3px solid #86b991;
+  outline-offset: 2px;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (max-width: 900px) {
+  .member-settings {
+    padding: 30px 24px 44px;
+  }
+
+  .member-settings-layout {
+    grid-template-columns: minmax(0, 1fr) 280px;
+    gap: 16px;
+  }
+}
+
+@media (max-width: 700px) {
+  .member-settings-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .member-add-card {
+    grid-row: 1;
+  }
+}
+
+@media (max-width: 520px) {
+  .member-settings {
+    padding: 24px 14px 36px;
+  }
+
+  .member-admin-card {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    padding: 14px;
+  }
+
+  .member-admin-badge {
+    grid-column: 3;
+    grid-row: 1;
+    justify-self: end;
+  }
+
+  .member-admin-details {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .member-my-settings-link {
+    grid-column: 2 / -1;
+    margin-top: 0;
+  }
+
+  .member-table th,
+  .member-table td {
+    padding-right: 9px;
+    padding-left: 9px;
+  }
+}
+
 .settings-security-card {
   margin-top: 18px;
 }

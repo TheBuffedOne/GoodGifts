@@ -3,6 +3,7 @@ import './App.css'
 import BirthdayBoard from './BirthdayBoard/BirthdayBoard.jsx'
 import { people } from './BirthdayBoard/people.js'
 import MySettings from './MySettings/MySettings.jsx'
+import MemberSettings from './MemberSettings/MemberSettings.jsx'
 
 const navigationItems = [
   { id: 'birthday', label: 'Birthday board', icon: 'cake.svg' },
@@ -96,6 +97,8 @@ function App() {
           <BirthdayBoard accountName={accountName} />
         ) : activeView === 'my-settings' ? (
           <MySettings accountName={accountName} />
+        ) : activeView === 'member-settings' ? (
+          <MemberSettings accountName={accountName} onOpenMySettings={() => setActiveView('my-settings')} />
         ) : activeView === 'login' ? (
           <form className="login-window" onSubmit={handleLogin}>
             <h1>User Login</h1>
