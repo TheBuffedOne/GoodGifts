@@ -1,14 +1,15 @@
 import { useState } from 'react'
 import './App.css'
 import BirthdayBoard from './BirthdayBoard/BirthdayBoard.jsx'
-import { people } from './BirthdayBoard/people.js'
+import { people } from './FixData/people.js'
 import MySettings from './MySettings/MySettings.jsx'
 import MemberSettings from './MemberSettings/MemberSettings.jsx'
 
 const navigationItems = [
   { id: 'birthday', label: 'Birthday board', icon: 'cake.svg' },
   { id: 'my-settings', label: 'My settings', icon: 'settings.svg' },
-  { id: 'member-settings', label: 'Member settings', icon: 'users.svg' },
+  { id: 'member-settings', label: 'Member settings', icon: 'users.svg',
+    visibleFor: (user) => user?.isAdmin  === true }
 ]
 
 function App() {
@@ -19,13 +20,19 @@ function App() {
   const isAuthenticated = accountName !== 'Unknown'
   const account = people.find((person) => person.name === accountName)
 
+  const isItemVisible = (item) => !item.visibleFor || item.visibleFor(account)
+  const visibleItems = navigationItems.filter(isItemVisible)
+  const canOpenView = (viewId) => {
+    const item = navigationItems.find((entry) => entry.id === viewId)
+    return !item || isItemVisible(item)
+  }
+
   const handleLogin = (event) => {
     event.preventDefault()
     const username = new FormData(event.currentTarget).get('username')
     const password = new FormData(event.currentTarget).get('password')
     const name = typeof username === 'string' ? username.trim() : ''
     const person = people.find((entry) => entry.name.toLowerCase() === name.toLowerCase())
-    const personsPassword = people.find((entry) => entry.name.toLowerCase() === name.toLowerCase()).password
 
     if (!name) {
       return
@@ -36,7 +43,7 @@ function App() {
       return
     }
 
-    if (password !== personsPassword) {
+    if (password !== person.password) {
       setLoginPasswordError('Das Passwort ist falsch.')
       return
     }
@@ -65,7 +72,7 @@ function App() {
         </h2>
 
         <nav className="sidebar-nav" aria-label="Main navigation">
-          {navigationItems.map((item) => (
+          {visibleItems.map((item) => (
             <button
               className={`sidebar-button${activeView === item.id ? ' is-selected' : ''}`}
               type="button"
@@ -114,8 +121,8 @@ function App() {
           <BirthdayBoard accountName={accountName} />
         ) : activeView === 'my-settings' ? (
           <MySettings accountName={accountName} />
-        ) : activeView === 'member-settings' ? (
-          <MemberSettings accountName={accountName} onOpenMySettings={() => setActiveView('my-settings')} />
+        ) : activeView === 'member-settings' && canOpenView('member-settings') ? (
+            <MemberSettings accountName={accountName} onOpenMySettings={() => setActiveView('my-settings')} />
         ) : activeView === 'login' ? (
           <form className="login-window" onSubmit={handleLogin}>
             <h1>User Login</h1>

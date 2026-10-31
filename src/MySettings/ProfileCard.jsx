@@ -1,5 +1,5 @@
 import { useId, useState } from 'react'
-import { MONTHS_EN } from '../months.js'
+import { MONTHS_EN } from '../FixData/months.js'
 
 function ProfileCard({ profile, defaultAvatar, onChange }) {
   const id = useId()

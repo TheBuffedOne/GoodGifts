@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { people } from '../BirthdayBoard/people.js'
+import { people } from '../FixData/people.js'
 import AddMemberForm from './AddMemberForm.jsx'
 import MemberRow from './MemberRow.jsx'
 

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { MONTH_NAMES_EN } from '../months.js'
+import { MONTH_NAMES_EN } from '../FixData/months.js'
 
 function formatBirthday(birthday) {
   if (!birthday) {

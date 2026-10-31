@@ -1,8 +1,8 @@
 import { useState } from 'react'
-import { people } from '../BirthdayBoard/people.js'
+import { people } from '../FixData/people.js'
 import PreferencesCard from './PreferencesCard.jsx'
 import ProfileCard from './ProfileCard.jsx'
-import { MONTH_NAMES_EN } from '../months.js'
+import { MONTH_NAMES_EN } from '../FixData/months.js'
 
 function createInitialSettings(accountName) {
   const person = people.find((entry) => entry.name === accountName)
