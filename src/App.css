@@ -113,6 +113,12 @@ button {
 .sidebar-account-auth:focus-visible,
 .gift-plans-trigger:focus-visible,
 .gift-plans-close:focus-visible,
+.settings-tab:focus-visible,
+.settings-photo-upload:focus-within,
+.settings-photo-remove:focus-visible,
+.settings-no-go-remove:focus-visible,
+.settings-cancel:focus-visible,
+.settings-save:focus-visible,
 .gift-add:focus-visible,
 .gift-remove:focus-visible {
   outline: 3px solid #86b991;
@@ -650,5 +656,301 @@ button {
   .board-heading {
     flex-direction: column;
     gap: 12px;
+  }
+}
+
+.my-settings {
+  width: min(100%, 1050px);
+  margin: 0 auto;
+}
+
+.settings-heading {
+  padding-bottom: 24px;
+}
+
+.settings-eyebrow {
+  margin: 0 0 5px;
+  color: #438054;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+.settings-heading h1 {
+  margin: 0;
+  color: #26332b;
+  font-size: clamp(27px, 4vw, 36px);
+  line-height: 1.2;
+}
+
+.settings-heading > p:last-child {
+  margin: 7px 0 0;
+  color: #778078;
+  font-size: 15px;
+}
+
+.settings-tabs {
+  display: flex;
+  gap: 26px;
+  border-bottom: 1px solid #e9e6de;
+}
+
+.settings-tab {
+  padding: 12px 0 11px;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  background: transparent;
+  color: #798078;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.settings-tab.is-active {
+  border-bottom-color: #398052;
+  color: #39774a;
+  font-weight: 800;
+}
+
+.settings-panel {
+  display: grid;
+  gap: 18px;
+  padding-top: 18px;
+}
+
+.settings-card,
+.settings-security-card {
+  padding: 22px 24px;
+  border: 1px solid #eeece5;
+  border-radius: 15px;
+  background: #fffdfa;
+  box-shadow: 0 5px 18px rgb(44 54 45 / 3%);
+}
+
+.settings-card h2,
+.settings-security-card h2 {
+  margin: 0;
+  color: #2d3a31;
+  font-size: 21px;
+}
+
+.settings-card-description {
+  margin: 3px 0 17px;
+  color: #81877f;
+  font-size: 13px;
+}
+
+.settings-photo-row {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 17px;
+}
+
+.settings-avatar {
+  width: 66px;
+  height: 66px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #ece9e1;
+}
+
+.settings-photo-controls {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 7px 12px;
+}
+
+.settings-photo-upload {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 11px;
+  border: 1px solid #e8e6df;
+  border-radius: 8px;
+  color: #35463a;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.settings-photo-upload:hover {
+  background: #f6f8f4;
+}
+
+.settings-photo-upload input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  clip-path: inset(50%);
+}
+
+.settings-photo-remove {
+  padding: 7px 2px;
+  border: 0;
+  background: transparent;
+  color: #747d75;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.settings-photo-hint,
+.settings-photo-error {
+  flex-basis: 100%;
+  color: #8a9088;
+  font-size: 11px;
+}
+
+.settings-photo-error {
+  color: #a23b32;
+}
+
+.settings-field {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 6px;
+  color: #465349;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.settings-field input,
+.settings-field select,
+.settings-field textarea {
+  width: 100%;
+  min-height: 39px;
+  padding: 9px 11px;
+  border: 1px solid #e8e6df;
+  border-radius: 8px;
+  background: #fff;
+  color: #4d574f;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.settings-field input:focus,
+.settings-field select:focus,
+.settings-field textarea:focus {
+  border-color: #73a77d;
+  outline: 3px solid rgb(134 185 145 / 25%);
+}
+
+.settings-birthday-fields {
+  display: grid;
+  grid-template-columns: minmax(100px, 0.3fr) minmax(180px, 1fr);
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.settings-no-go-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  padding: 0;
+  margin: 0 0 15px;
+  list-style: none;
+}
+
+.settings-no-go {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: #e8f2e7;
+  color: #477b53;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.settings-no-go-remove {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #639070;
+  font-size: 14px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.settings-no-go-form {
+  margin-bottom: 14px;
+}
+
+.settings-field textarea {
+  min-height: 82px;
+  resize: vertical;
+  line-height: 1.5;
+}
+
+.settings-privacy-note {
+  margin: 8px 0 0;
+  color: #969b93;
+  font-size: 11px;
+}
+
+.settings-actions {
+  display: flex;
+  justify-content: flex-start;
+  gap: 10px;
+  padding-bottom: 8px;
+}
+
+.settings-cancel,
+.settings-save {
+  padding: 9px 14px;
+  border: 1px solid #e6e5df;
+  border-radius: 8px;
+  background: #fff;
+  color: #4d584f;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.settings-save {
+  border-color: #347b5e;
+  background: #347b5e;
+  color: #fff;
+}
+
+.settings-cancel:hover {
+  background: #f7f7f3;
+}
+
+.settings-save:hover {
+  background: #2e6d52;
+}
+
+.settings-security-card {
+  margin-top: 18px;
+}
+
+.settings-security-card p {
+  margin: 7px 0 0;
+  color: #788078;
+}
+
+@media (max-width: 520px) {
+  .settings-card,
+  .settings-security-card {
+    padding: 18px 16px;
+  }
+
+  .settings-tabs {
+    gap: 18px;
+  }
+
+  .settings-tab {
+    font-size: 12px;
+  }
+
+  .settings-birthday-fields {
+    grid-template-columns: 0.6fr 1fr;
   }
 }

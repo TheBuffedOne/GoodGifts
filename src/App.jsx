@@ -2,6 +2,7 @@ import { useState } from 'react'
 import './App.css'
 import BirthdayBoard from './BirthdayBoard/BirthdayBoard.jsx'
 import { people } from './BirthdayBoard/people.js'
+import MySettings from './MySettings/MySettings.jsx'
 
 const navigationItems = [
   { id: 'birthday', label: 'Birthday board', icon: 'cake.svg' },
@@ -93,6 +94,8 @@ function App() {
       <main className="main-screen">
         {activeView === 'birthday' ? (
           <BirthdayBoard accountName={accountName} />
+        ) : activeView === 'my-settings' ? (
+          <MySettings accountName={accountName} />
         ) : activeView === 'login' ? (
           <form className="login-window" onSubmit={handleLogin}>
             <h1>User Login</h1>

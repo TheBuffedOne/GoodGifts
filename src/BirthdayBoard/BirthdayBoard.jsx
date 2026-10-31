@@ -1,20 +1,6 @@
 import PersonCard from './PersonCard.jsx'
 import { people } from './people.js'
-
-const MONTHS = {
-  Januar: 0,
-  Februar: 1,
-  März: 2,
-  April: 3,
-  Mai: 4,
-  Juni: 5,
-  Juli: 6,
-  August: 7,
-  September: 8,
-  Oktober: 9,
-  November: 10,
-  Dezember: 11,
-}
+import { MONTHS } from '../months.js'
 
 function daysUntilNextBirthday(birthday, today = new Date()) {
   const [dayPart, monthName] = birthday.replace('.', '').split(' ')
