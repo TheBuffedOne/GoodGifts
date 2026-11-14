@@ -1,26 +1,39 @@
 import { useState } from 'react'
 import GiftPlans from './GiftPlans.jsx'
 
-function PersonCard({ person }) {
-  const [gifts, setGifts] = useState([])
+function PersonCard({ person, currentUser }) {
+  const [gifts, setGifts] = useState(person.presents ?? [])
   const [isGiftPlansOpen, setIsGiftPlansOpen] = useState(false)
+  const base = `/geschenkIdee/${person.id}/presents`
 
-  function addGift(giftName) {
-    const newGift = giftName.trim()
-    if (!newGift) return
-    setGifts((currentGifts) => [...currentGifts, { name: newGift, likes: 0, liked: false }])
+  async function addGift(giftName) {
+    const name = giftName.trim()
+    if (!name) return
+    const res = await fetch(base, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ userId: currentUser.id, name }),
+    })
+    if (!res.ok) return
+    const newGift = await res.json()
+    setGifts((current) => [...current, newGift])
   }
 
-  function removeGift(giftIndex) {
-    setGifts((currentGifts) => currentGifts.filter((_, index) => index !== giftIndex))
+  async function removeGift(giftId) {
+    const res = await fetch(`${base}/${giftId}?userId=${currentUser.id}`, { method: 'DELETE' })
+    if (!res.ok) return
+    setGifts((current) => current.filter((g) => g.id !== giftId))
   }
 
-  function toggleLike(giftIndex) {
-    setGifts((currentGifts) => currentGifts.map((gift, index) => {
-      if (index !== giftIndex) return gift
-      const liked = !gift.liked
-      return { ...gift, liked, likes: Math.max(0, gift.likes + (liked ? 1 : -1)) }
-    }))
+  async function toggleLike(giftId) {
+    const res = await fetch(`${base}/${giftId}/like`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ userId: currentUser.id }),
+    })
+    if (!res.ok) return
+    const { liked, likes } = await res.json()
+    setGifts((current) => current.map((g) => (g.id === giftId ? { ...g, liked, likes } : g)))
   }
 
   return (

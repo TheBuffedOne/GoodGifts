@@ -48,8 +48,8 @@ function GiftPlans({ person, gifts, onAddGift, onRemoveGift, onToggleLike, onClo
             <h3>Gift ideas</h3>
             {gifts.length > 0 ? (
                 <ul className="gift-list">
-                  {gifts.map((gift, index) => (
-                  <li className="gift-list-item" key={`${gift.name}-${index}`}>
+              {gifts.map((gift) => (
+                  <li className="gift-list-item" key={gift.id}>
                     <span>{gift.name}</span>
                     <div className="gift-list-actions">
                       <button
@@ -57,7 +57,7 @@ function GiftPlans({ person, gifts, onAddGift, onRemoveGift, onToggleLike, onClo
                         type="button"
                         aria-label={`${gift.liked ? 'Unlike' : 'Like'} ${gift.name}`}
                         aria-pressed={gift.liked}
-                        onClick={() => onToggleLike(index)}
+                        onClick={() => onToggleLike(gift.id)}
                       >
                         {gift.liked ? '♥' : '♡'} {gift.likes}
                       </button>
@@ -65,7 +65,7 @@ function GiftPlans({ person, gifts, onAddGift, onRemoveGift, onToggleLike, onClo
                       className="gift-remove"
                       type="button"
                       aria-label={`Remove ${gift.name}`}
-                      onClick={() => onRemoveGift(index)}
+                      onClick={() => onRemoveGift(gift.id)}
                     >
                       ×
                     </button>

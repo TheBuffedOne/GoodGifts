@@ -1,35 +1,46 @@
-import {useState} from 'react'
-import {people} from '../FixData/people.js'
+import {useEffect, useState} from 'react'
 import PreferencesCard from './PreferencesCard.jsx'
 import ProfileCard from './ProfileCard.jsx'
 import {MONTH_NAMES_EN} from '../FixData/months.js'
 import ChangePasswordCard from './ChangePasswordCard.jsx'
 
-function createInitialSettings(accountName) {
-    const person = people.find((entry) => entry.name === accountName)
-    const [day, germanMonth] = (person?.birthday ?? '24. Juni').replace('.', '').split(' ')
+function createInitialSettings(account) {
+    const [day, germanMonth] = (account?.birthday ?? '24. Juni').replace('.', '').split(' ')
 
     return {
-        displayName: person?.name ?? accountName,
+        displayName: account?.name ?? '',
         day,
         month: MONTH_NAMES_EN[germanMonth] ?? 'June',
-        avatar: person ? `https://i.pravatar.cc/160?img=${person.avatar}` : 'https://i.pravatar.cc/160?img=47',
-        noGos: [],
-        notes: '',
+        avatar: account?.profileAvatar ?? `https://i.pravatar.cc/160?img=${account?.avatar ?? 47}`,
+        noGos: account?.noGos ?? [],
+        notes: account?.notes ?? '',
     }
 }
 
-function MySettings({accountName}) {
-    const [settings, setSettings] = useState(() => createInitialSettings(accountName))
-    const [savedSettings, setSavedSettings] = useState(() => createInitialSettings(accountName))
+function MySettings({account}) {
+    const [settings, setSettings] = useState(() => createInitialSettings(account))
+    const [savedSettings, setSavedSettings] = useState(() => createInitialSettings(account))
     const [activeTab, setActiveTab] = useState('profile')
+    const [status, setStatus] = useState('')
+
+    useEffect(() => {
+        fetch(`/api/members?userId=${account.id}`).then((res) => res.json()).then((members) => {
+            const user = members.find((member) => member.id === account.id)
+            if (user) { const value = createInitialSettings(user); setSettings(value); setSavedSettings(value) }
+        }).catch(() => setStatus('Profil konnte nicht geladen werden.'))
+    }, [account.id])
 
     function updateSetting(key, value) {
         setSettings((current) => ({...current, [key]: value}))
     }
 
-    function saveSettings() {
-        setSavedSettings({...settings, noGos: [...settings.noGos]})
+    async function saveSettings() {
+        const monthNames = { January: 'Januar', February: 'Februar', March: 'Maerz', April: 'April', May: 'Mai', June: 'Juni', July: 'Juli', August: 'August', September: 'September', October: 'Oktober', November: 'November', December: 'Dezember' }
+        const payload = { ...settings, birthday: `${settings.day}. ${monthNames[settings.month] ?? 'Juni'}` }
+        const response = await fetch(`/api/members/${account.id}/profile`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
+        const result = await response.json()
+        if (!response.ok) { setStatus(result.error ?? 'Speichern fehlgeschlagen.'); return }
+        setSavedSettings({...settings, noGos: [...settings.noGos]}); setStatus('Changes saved.')
     }
 
     function cancelChanges() {
@@ -73,7 +84,7 @@ function MySettings({accountName}) {
                 <div className="settings-panel" id="profile-panel" role="tabpanel" aria-labelledby="profile-tab">
                     <ProfileCard
                         profile={settings}
-                        defaultAvatar={createInitialSettings(accountName).avatar}
+                        defaultAvatar={`https://i.pravatar.cc/160?img=${account.avatar}`}
                         onChange={updateSetting}
                     />
                     <PreferencesCard
@@ -86,12 +97,13 @@ function MySettings({accountName}) {
                         <button className="settings-cancel" type="button" onClick={cancelChanges}>Cancel</button>
                         <button className="settings-save" type="button" onClick={saveSettings}>Save changes</button>
                     </div>
+                    {status && <p role="status">{status}</p>}
                 </div>
             )}
 
             {activeTab === 'password' && (
                 <div className="settings-panel" id="password-panel" role="tabpanel" aria-labelledby="password-tab">
-                    <ChangePasswordCard/>
+                    <ChangePasswordCard userId={account.id}/>
                 </div>
             )}
         </section>

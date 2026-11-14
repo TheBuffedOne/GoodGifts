@@ -1,0 +1,62 @@
+@baseUrl = http://localhost:3001
+
+### Mitglieder abrufen (GET im Browser: http://localhost:3001/api/members)
+GET {{baseUrl}}/api/members
+Accept: application/json
+
+### Geburtstags- und Geschenkideen abrufen (GET im Browser: http://localhost:3001/geschenkIdee/?userId=7)
+GET {{baseUrl}}/geschenkIdee/?userId=7
+Accept: application/json
+
+### Login erfolgreich
+POST {{baseUrl}}/api/login
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "password": "admin"
+}
+
+### Mitglied erfolgreich anlegen (legt einen temporären Testdatensatz an)
+POST {{baseUrl}}/api/members
+Content-Type: application/json
+
+{
+  "name": "HTTP Client Test",
+  "username": "http.client.test",
+  "email": "http-client-test@example.test",
+  "password": "testpassword123"
+}
+> {% client.global.set("testMemberId", response.body.id); %}
+
+### Mitglied bearbeiten (nach erfolgreichem Anlegen ausführen)
+PATCH {{baseUrl}}/api/members/{{testMemberId}}
+Content-Type: application/json
+
+{
+  "name": "HTTP Client Test Updated",
+  "username": "http.client.test",
+  "birthday": "12. April"
+}
+
+### Ungültige Eingabe: erforderliche Felder fehlen (erwartet: 400)
+POST {{baseUrl}}/api/members
+Content-Type: application/json
+
+{
+  "name": ""
+}
+
+### Unbekannte ID bearbeiten (erwartet: 404)
+PATCH {{baseUrl}}/api/members/999999
+Content-Type: application/json
+
+{
+  "name": "Gibt es nicht"
+}
+
+### Mitglied löschen (räumt den oben angelegten Testdatensatz auf)
+DELETE {{baseUrl}}/api/members/{{testMemberId}}
+
+### Unbekannte ID löschen (erwartet: 404)
+DELETE {{baseUrl}}/api/members/999999

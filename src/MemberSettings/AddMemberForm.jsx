@@ -15,7 +15,9 @@ function AddMemberForm({ members, onCreate }) {
       return
     }
 
-    onCreate({ name, username })
+    const email = formData.get('e-mail').trim()
+    const password = formData.get('password').trim()
+    onCreate({ name, username, email, password })
     setError('')
     form.reset()
   }

@@ -1,5 +1,4 @@
-import { useState } from 'react'
-import { people } from '../FixData/people.js'
+import { useEffect, useState } from 'react'
 import AddMemberForm from './AddMemberForm.jsx'
 import MemberRow from './MemberRow.jsx'
 
@@ -14,11 +13,11 @@ function createUsername(name) {
 }
 
 function MemberSettings({ accountName, onOpenMySettings }) {
-  const [members, setMembers] = useState(() => people.map((person) => ({
-    ...person,
-    username: createUsername(person.name),
-  })))
+  const [members, setMembers] = useState([])
   const [editingMemberId, setEditingMemberId] = useState(null)
+  const [error, setError] = useState('')
+
+  useEffect(() => { fetch('/api/members').then((res) => res.json()).then(setMembers).catch(() => setError('Mitglieder konnten nicht geladen werden.')) }, [])
 
   const admin = members.find((member) => member.name === accountName) ?? {
     name: accountName,
@@ -27,22 +26,25 @@ function MemberSettings({ accountName, onOpenMySettings }) {
   }
   const friendMembers = members.filter((member) => member.name !== accountName)
 
-  function createMember(member) {
-    setMembers((currentMembers) => {
-      const id = Math.max(0, ...currentMembers.map((entry) => entry.id)) + 1
-      return [...currentMembers, { ...member, id, avatar: 47 }]
-    })
+  async function createMember(member) {
+    const res = await fetch('/api/members', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(member) })
+    const data = await res.json()
+    if (!res.ok) { setError(data.error); return }
+    setMembers((current) => [...current, data]); setError('')
   }
 
-  function updateMember(updatedMember) {
-    setMembers((currentMembers) => currentMembers.map((member) => (
-      member.id === updatedMember.id ? updatedMember : member
-    )))
+  async function updateMember(updatedMember) {
+    const res = await fetch(`/api/members/${updatedMember.id}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(updatedMember) })
+    const data = await res.json()
+    if (!res.ok) { setError(data.error); return }
+    setMembers((current) => current.map((member) => member.id === data.id ? data : member)); setError('')
     setEditingMemberId(null)
   }
 
-  function removeMember(memberId) {
-    setMembers((currentMembers) => currentMembers.filter((member) => member.id !== memberId))
+  async function removeMember(memberId) {
+    const res = await fetch(`/api/members/${memberId}`, { method: 'DELETE' })
+    if (!res.ok) { const data = await res.json(); setError(data.error); return }
+    setMembers((current) => current.filter((member) => member.id !== memberId)); setError('')
     setEditingMemberId(null)
   }
 
@@ -55,6 +57,7 @@ function MemberSettings({ accountName, onOpenMySettings }) {
       </header>
 
       <div className="member-settings-layout">
+        {error && <p role="alert">{error}</p>}
         <div className="member-settings-main">
           <article className="member-admin-card">
             <img

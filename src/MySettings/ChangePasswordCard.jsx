@@ -2,7 +2,7 @@ import { useState } from 'react'
 
 const MIN_LENGTH = 8
 
-function ChangePasswordCard() {
+function ChangePasswordCard({ userId }) {
     const [form, setForm] = useState({ current: '', next: '', confirm: '' })
     const [errors, setErrors] = useState({})
     const [success, setSuccess] = useState(false)
@@ -22,13 +22,23 @@ function ChangePasswordCard() {
         return next
     }
 
-    function handleSubmit(event) {
+    async function handleSubmit(event) {
         event.preventDefault()
         const validationErrors = validate()
         setErrors(validationErrors)
         if (Object.keys(validationErrors).length > 0) return
 
-        // TODO: hier den echten API-Call einbauen
+        try {
+            const response = await fetch(`/api/members/${userId}/password`, {
+                method: 'PATCH', headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ currentPassword: form.current, newPassword: form.next }),
+            })
+            const result = await response.json()
+            if (!response.ok) { setErrors({ current: result.error }); return }
+        } catch {
+            setErrors({ current: 'Server nicht erreichbar.' })
+            return
+        }
         setForm({ current: '', next: '', confirm: '' })
         setSuccess(true)
     }

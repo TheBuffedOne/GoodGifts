@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import './App.css'
 import BirthdayBoard from './BirthdayBoard/BirthdayBoard.jsx'
-import { people } from './FixData/people.js'
 import MySettings from './MySettings/MySettings.jsx'
 import MemberSettings from './MemberSettings/MemberSettings.jsx'
 
@@ -14,11 +13,11 @@ const navigationItems = [
 
 function App() {
   const [activeView, setActiveView] = useState('login')
-  const [accountName, setAccountName] = useState('Unknown')
+  const [account, setAccount] = useState(null)
+  const accountName = account?.name ?? 'Unknown'
   const [loginNameError, setLoginNameError] = useState('')
   const [loginPasswordError, setLoginPasswordError] = useState('')
   const isAuthenticated = accountName !== 'Unknown'
-  const account = people.find((person) => person.name === accountName)
 
   const isItemVisible = (item) => !item.visibleFor || item.visibleFor(account)
   const visibleItems = navigationItems.filter(isItemVisible)
@@ -27,35 +26,36 @@ function App() {
     return !item || isItemVisible(item)
   }
 
-  const handleLogin = (event) => {
+  const handleLogin = async (event) => {
     event.preventDefault()
     const username = new FormData(event.currentTarget).get('username')
     const password = new FormData(event.currentTarget).get('password')
     const name = typeof username === 'string' ? username.trim() : ''
-    const person = people.find((entry) => entry.name.toLowerCase() === name.toLowerCase())
-
     if (!name) {
       return
     }
-
-    if (!person) {
-      setLoginNameError('Der Name existiert nicht.')
-      return
+    try {
+      const response = await fetch('/api/login', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username: name, password }),
+      })
+      const result = await response.json()
+      if (!response.ok) {
+        setLoginNameError('')
+        setLoginPasswordError(result.error ?? 'Anmeldung fehlgeschlagen.')
+        return
+      }
+      setLoginNameError('')
+      setLoginPasswordError('')
+      setAccount(result)
+      setActiveView('birthday')
+    } catch {
+      setLoginPasswordError('Der Server ist nicht erreichbar. Bitte starte das Backend.')
     }
-
-    if (password !== person.password) {
-      setLoginPasswordError('Das Passwort ist falsch.')
-      return
-    }
-
-    setLoginNameError('')
-    setLoginPasswordError('')
-    setAccountName(person.name)
-    setActiveView('birthday')
   }
 
   const handleLogout = () => {
-    setAccountName('Unknown')
+    setAccount(null)
     setActiveView('login')
   }
 
@@ -118,9 +118,9 @@ function App() {
 
       <main className="main-screen">
         {activeView === 'birthday' ? (
-          <BirthdayBoard accountName={accountName} />
+          <BirthdayBoard account={account} />
         ) : activeView === 'my-settings' ? (
-          <MySettings accountName={accountName} />
+          <MySettings account={account} />
         ) : activeView === 'member-settings' && canOpenView('member-settings') ? (
             <MemberSettings accountName={accountName} onOpenMySettings={() => setActiveView('my-settings')} />
         ) : activeView === 'login' ? (
